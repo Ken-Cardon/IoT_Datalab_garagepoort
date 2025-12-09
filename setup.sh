@@ -1,20 +1,28 @@
 #!/bin/bash
-#
-#
-# Basic setup script to prep folder for use
+
 
 if [ $USER != "root" ]
 then
-	echo "use sudo! exiting now"
-	exit
+    echo "use sudo! exiting now"
+    exit
 fi
 
-apt install -y apache2-utils
+apt update
+apt install -y mosquitto mosquitto-clients
 
-mkdir grafana_data
-chown 472:472 grafana_data
-mkdir node_red_data
-chown 1000:1000 node_red_data
+mkdir -p influx_conf
 
-read -p "Geef een user in voor toegang tot het node-red dashboard: " user
-htpasswd -c passwd $user
+echo "--- Mosquitto Beveiliging Setup ---"
+read -p "GEBRUIKERSNAAM?" mqtt_user
+if [ -z "$mqtt_user" ]; then
+    echo "Geen gebruikersnaam ingevoerd. Setup afgebroken."
+    exit 1
+fi
+
+echo "WACHTWOORD?"
+mosquitto_passwd -c passwd "$mqtt_user"
+
+chown mosquitto:mosquitto passwd
+chmod 600 passwd
+
+echo "succes"

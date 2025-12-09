@@ -1,55 +1,73 @@
-version: '3'
+version: '3.8'
 
 services:
+  newt:
+    image: fosrl/newt
+    container_name: newt
+    restart: unless-stopped
+    environment:
+      - PANGOLIN_ENDPOINT=https://pangolin.datalab.aplab.be
+      - NEWT_ID=s5qigbhdha3u0vj
+      - NEWT_SECRET=vxmpw7q71wdp33uo68sbj8v2nig85nlbu52g1c7hqu9fjlpf
+      - ACCEPT_CLIENTS=true
+
   mosquitto:
     image: eclipse-mosquitto:2.0
+    container_name: mosquitto
     ports:
-      - "1883:1883"
+      - "1884:1883"
     volumes:
       - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - ./passwd:/mosquitto/config/passwd
     restart: always
 
   influxdb:
     image: influxdb:2.7
+    container_name: influxdb
+    ports:
+      - "8086:8086"
     volumes:
-      - ./influxdb_data:/var/lib/influxdb2
+      - influxdb_data:/var/lib/influxdb2
       - ./influx_conf:/etc/influxdb2
     environment:
       - DOCKER_INFLUXDB_INIT_MODE=setup
-      - DOCKER_INFLUXDB_INIT_USERNAME=influxUser
-      - DOCKER_INFLUXDB_INIT_PASSWORD=influxPass
-      - DOCKER_INFLUXDB_INIT_ORG=piOrg
-      - DOCKER_INFLUXDB_INIT_BUCKET=piBucket
+      - DOCKER_INFLUXDB_INIT_USERNAME=KenC
+      - DOCKER_INFLUXDB_INIT_PASSWORD=KenCinfluxdb
+      - DOCKER_INFLUXDB_INIT_ORG=garage_iot
+      - DOCKER_INFLUXDB_INIT_BUCKET=garage_data
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=fvHh87oshlYCjy18oinySm1+Y507M8ssVo7FfWzkkVsxW0fMHTev2ypotIziiNow
     restart: always
 
   node-red:
     image: nodered/node-red:3.1-debian
-    volumes:
-      - ./node_red_data:/data
+    container_name: node-red
     depends_on:
       - mosquitto
       - influxdb
+    ports:
+      - "1880:1880"
+    volumes:
+      - node_red_data:/data
+    environment:
+      - NODE_RED_ENABLE_PROJECTS=true
     restart: always
 
   grafana:
     image: grafana/grafana-oss:9.5.9-ubuntu
-    volumes:
-      - ./grafana_data:/var/lib/grafana
-    environment:
-      - GF_FEATURE_TOGGLES_ENABLE=publicDashboards
+    container_name: grafana
     depends_on:
       - influxdb
-    restart: always
-
-  nginx:
-    image: nginx:1.25
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./passwd:/etc/nginx/passwd:ro
+      - mosquitto
     ports:
-      - "80:80"
-    depends_on:
-      - node-red
-      - grafana
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    environment:
+      - GF_FEATURE_TOGGLES_ENABLE=publicDashboards
+      - GF_SECURITY_ADMIN_PASSWORD=KenCGrafana
     restart: always
 
+volumes:
+  influxdb_data:
+  node_red_data:
+  grafana_data:
