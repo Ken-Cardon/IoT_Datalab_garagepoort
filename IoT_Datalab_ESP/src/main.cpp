@@ -1,97 +1,111 @@
 #include <Arduino.h>
+#include <WiFi.h>
+#include <PubSubClient.h>
 
-const int ledPin = 0;
-const int buttonPin = 4;
+int led_pin = 0;
+int druk_pin = 4;
 
-enum State { STOPPED, FORWARD, REVERSE };
-State state = STOPPED;
-
-bool lastBtn = false;
-
+bool isRunning = false;
+bool isForward = true;
 unsigned long startTime = 0;
-unsigned long elapsed = 0;         // tijd dat beweging liep vóór stop
-unsigned long targetDuration = 0;  // hoe lang deze beweging moet duren
+unsigned long elapsedTime = 0;
 
-const unsigned long MAX_DURATION = 10000; // 10 seconden
+const unsigned long MAX_DURATION = 10000;
+
+// variabelen WIFI
+const char WIFI_SSID[] = "Bletchley";
+const char WIFI_PASSWORD[] = "laptop!internet";
+
+// variabelen MQTT
+const char MQTT_HOST[] = "10.150.242.103";
+const int  MQTT_PORT = 1883;
+const char MQTT_USER[] = "KenC";
+const char MQTT_PASSWORD[] = "Kleintje7227!";
+
+WiFiClient espClient;
+PubSubClient client(espClient);
+
+// MQTT publish
+void mqttSend(const char* topic, const String& payload) {
+  if (client.connected()) {
+    client.publish(topic, payload.c_str());
+  }
+}
+
+// Connect WiFi
+void connectWiFi() {
+  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+  }
+}
+
+// Connect MQTT
+void connectMQTT() {
+  while (!client.connected()) {
+    client.connect("GarageDoorSim", MQTT_USER, MQTT_PASSWORD);
+    delay(500);
+  }
+}
 
 void setup() {
-  pinMode(ledPin, OUTPUT);
-  pinMode(buttonPin, INPUT); // jouw externe pulldown
-  digitalWrite(ledPin, LOW);
+  pinMode(led_pin, OUTPUT);
+  pinMode(druk_pin, INPUT); // externe pulldown
+  digitalWrite(led_pin, LOW); // led uit bij start
+
+  WiFi.mode(WIFI_STA);
+  connectWiFi();
+
+  client.setServer(MQTT_HOST, MQTT_PORT);
+  connectMQTT();
 }
 
 void loop() {
-  bool currBtn = digitalRead(buttonPin);
-  bool pressed = (currBtn && !lastBtn);
-  lastBtn = currBtn;
+  client.loop();
 
-  unsigned long now = millis();
+  bool pressed = digitalRead(druk_pin);
 
-  switch(state) {
+  if (pressed) {
+    mqttSend("garage/button", "pressed");
 
-    // ------------------------------------------------------
-    // STOPPED
-    // ------------------------------------------------------
-    case STOPPED:
-      digitalWrite(ledPin, LOW);
+    if (!isRunning) {
+      // poort openen
+      isRunning = true;
+      startTime = millis();
 
-      if (pressed) {
+      elapsedTime = constrain(elapsedTime, 0, MAX_DURATION);
+      digitalWrite(led_pin, HIGH);
 
-        if (elapsed == 0) {
-          // Start een NIEUWE beweging → FORWARD max 10 sec
-          state = FORWARD;
-          targetDuration = MAX_DURATION;
-        } 
-        else {
-          // Start een REVERSE beweging met exact de vorige tijd
-          state = REVERSE;
-          targetDuration = elapsed;
-        }
+      mqttSend("garage/state", isForward ? "opening" : "closing");
+      mqttSend("garage/progress", String(elapsedTime));
+    }
+    else {
+      // stoppen
+      isRunning = false;
+      elapsedTime = millis() - startTime;
 
-        startTime = now;
-      }
-      break;
+      digitalWrite(led_pin, LOW);
 
+      mqttSend("garage/state", "stopped");
+      mqttSend("garage/progress", String(elapsedTime));
 
-    // ------------------------------------------------------
-    // FORWARD
-    // ------------------------------------------------------
-    case FORWARD:
-      digitalWrite(ledPin, HIGH);
+      isForward = !isForward;   // richting omkeren voor de volgende keer
+    }
 
-      if (pressed) {
-        // STOP
-        unsigned long ran = now - startTime;
-        if (ran > MAX_DURATION) ran = MAX_DURATION;
-        elapsed = ran;       // bewaar gelopen tijd
-        state = STOPPED;
-      }
-      else if (now - startTime >= targetDuration) {
-        // AUTOMATISCHE STOP
-        elapsed = 0;         // volledig traject → volgende keer weer FORWARD 10s
-        state = STOPPED;
-      }
-      break;
+    delay(300); // debounce
+  }
 
+  if (isRunning) {
+    unsigned long currentElapsed = millis() - startTime;
 
-    // ------------------------------------------------------
-    // REVERSE
-    // ------------------------------------------------------
-    case REVERSE:
-      digitalWrite(ledPin, HIGH);
+    mqttSend("garage/progress", String(currentElapsed));
 
-      if (pressed) {
-        // STOP
-        unsigned long ran = now - startTime;
-        if (ran > targetDuration) ran = targetDuration;
-        elapsed = ran;       // bewaar tijd die reverse liep
-        state = STOPPED;
-      }
-      else if (now - startTime >= targetDuration) {
-        // AUTOMATISCHE STOP
-        elapsed = 0;         // reverse volledig → volgende druk = FORWARD max 10s
-        state = STOPPED;
-      }
-      break;
+    if (currentElapsed >= MAX_DURATION) {
+      isRunning = false;
+      elapsedTime = 0;
+      digitalWrite(led_pin, LOW);
+
+      mqttSend("garage/state", isForward ? "open" : "closed");
+    }
   }
 }
