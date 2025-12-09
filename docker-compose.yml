@@ -10,7 +10,20 @@ services:
       - NEWT_ID=s5qigbhdha3u0vj
       - NEWT_SECRET=vxmpw7q71wdp33uo68sbj8v2nig85nlbu52g1c7hqu9fjlpf
       - ACCEPT_CLIENTS=true
-
+  traefik:
+    image: traefik
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./traefik.yml:/etc/traefik/traefik.yml
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./htpasswd:/etc/traefik/passwd
+    labels:
+      - "traefik.http.routers.dashboard.rule=Host(`traefik.10-150-242-103.traefik.me`)"
+      - "traefik.http.routers.dashboard.service=api@internal"
+      - "traefik.http.routers.dashboard.middlewares=auth"
+      - "traefik.http.middlewares.auth.basicauth.usersfile=/etc/traefik/passwd"
   mosquitto:
     image: eclipse-mosquitto:2.0
     container_name: mosquitto
@@ -29,13 +42,13 @@ services:
     volumes:
       - influxdb_data:/var/lib/influxdb2
       - ./influx_conf:/etc/influxdb2
-    environment:
-      - DOCKER_INFLUXDB_INIT_MODE=setup
-      - DOCKER_INFLUXDB_INIT_USERNAME=KenC
-      - DOCKER_INFLUXDB_INIT_PASSWORD=KenCinfluxdb
-      - DOCKER_INFLUXDB_INIT_ORG=garage_iot
-      - DOCKER_INFLUXDB_INIT_BUCKET=garage_data
-      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=fvHh87oshlYCjy18oinySm1+Y507M8ssVo7FfWzkkVsxW0fMHTev2ypotIziiNow
+#    environment:
+#      - DOCKER_INFLUXDB_INIT_MODE=setup
+#      - DOCKER_INFLUXDB_INIT_USERNAME=KenC
+#      - DOCKER_INFLUXDB_INIT_PASSWORD=KenCinfluxdb
+#      - DOCKER_INFLUXDB_INIT_ORG=garage_iot
+#      - DOCKER_INFLUXDB_INIT_BUCKET=garage_data
+#      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=fvHh87oshlYCjy18oinySm1+Y507M8ssVo7FfWzkkVsxW0fMHTev2ypotIziiNow
     restart: always
 
   node-red:
