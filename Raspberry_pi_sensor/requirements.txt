@@ -1,0 +1,2 @@
+paho-mqtt
+adafruit-circuitpython-dht # Gebruikt voor de DHT11
