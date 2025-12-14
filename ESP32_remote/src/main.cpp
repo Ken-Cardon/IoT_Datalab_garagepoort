@@ -67,7 +67,7 @@ void loop() {
   bool pressed = digitalRead(druk_pin);
 
   if (pressed) {
-    mqttSend("garage/button", "pressed");
+    mqttSend("garagepoort/knop", "ingedrukt");
 
     if (!isRunning) {
       // poort openen
@@ -77,8 +77,8 @@ void loop() {
       elapsedTime = constrain(elapsedTime, 0, MAX_DURATION);
       digitalWrite(led_pin, HIGH);
 
-      mqttSend("garage/state", isForward ? "opening" : "closing");
-      mqttSend("garage/progress", String(elapsedTime));
+      mqttSend("garagepoort/status", isForward ? "gaat open" : "gaat dicht");
+      mqttSend("garagepoort/voortgang", String(elapsedTime));
     }
     else {
       // stoppen
@@ -87,8 +87,8 @@ void loop() {
 
       digitalWrite(led_pin, LOW);
 
-      mqttSend("garage/state", "stopped");
-      mqttSend("garage/progress", String(elapsedTime));
+      mqttSend("garagepoort/status", "gestopt");
+      mqttSend("garagepoort/voortgang", String(elapsedTime));
 
       isForward = !isForward;   // richting omkeren voor de volgende keer
     }
@@ -99,14 +99,14 @@ void loop() {
   if (isRunning) {
     unsigned long currentElapsed = millis() - startTime;
 
-    mqttSend("garage/progress", String(currentElapsed));
+    mqttSend("garagepoort/voortgang", String(currentElapsed));
 
     if (currentElapsed >= MAX_DURATION) {
       isRunning = false;
       elapsedTime = 0;
       digitalWrite(led_pin, LOW);
 
-      mqttSend("garage/state", isForward ? "open" : "closed");
+      mqttSend("garagepoort/status", isForward ? "geopend" : "gesloten");
     }
   }
 }
