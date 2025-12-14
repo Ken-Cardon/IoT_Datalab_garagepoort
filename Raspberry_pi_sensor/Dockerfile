@@ -11,8 +11,11 @@ RUN apt-get update && \
 # Gebruik een herkenbare working directory
 WORKDIR /src/app
 
-# Kopieer de afhankelijkheden en installeer de Python-packages
+# Kopieer de afhankelijkheden
 COPY requirements.txt .
+
+# Installeer benodigde packages
+RUN pip install RPi.GPIO
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Kopieer je Python script naar de container

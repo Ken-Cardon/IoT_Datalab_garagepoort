@@ -1,3 +1,8 @@
+import RPi.GPIO as GPIO
+
+import board
+import adafruit_dht
+
 import paho.mqtt.client as mqtt
 import time
 import random
@@ -5,7 +10,7 @@ import json # Handig voor het verzenden van één gecombineerd JSON-bericht
 
 
 MQTT_HOST = "10.150.242.103"
-MQTT_PORT = 1884
+MQTT_PORT = 1883
 #MQTT_USER = "KenC"
 #MQTT_PASSWORD = "KenCMQTT"
 TOPIC_BASE = "garage/"

@@ -18,7 +18,7 @@ const char WIFI_PASSWORD[] = "laptop!internet";
 
 // variabelen MQTT
 const char MQTT_HOST[] = "10.150.242.103";
-const int  MQTT_PORT = 1884;
+const int  MQTT_PORT = 1883;
 //const char MQTT_USER[] = "KenC";
 //const char MQTT_PASSWORD[] = "Kleintje7227!";
 
