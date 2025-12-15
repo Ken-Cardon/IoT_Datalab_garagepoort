@@ -19,8 +19,8 @@ const char WIFI_PASSWORD[] = "laptop!internet";
 // variabelen MQTT
 const char MQTT_HOST[] = "10.150.242.103";
 const int  MQTT_PORT = 1883;
-//const char MQTT_USER[] = "KenC";
-//const char MQTT_PASSWORD[] = "Kleintje7227!";
+const char MQTT_USER[] = "";
+const char MQTT_PASSWORD[] = "";
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -44,7 +44,7 @@ void connectWiFi() {
 void connectMQTT() {
   while (!client.connected()) {
   client.connect("Garagepoort_pi");
-//client.connect("Garagepoort_pi", MQTT_USER, MQTT_PASSWORD);
+  client.connect("Garagepoort_pi", MQTT_USER, MQTT_PASSWORD);
     delay(500);
   }
 }
