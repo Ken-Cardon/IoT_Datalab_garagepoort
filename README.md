@@ -1,15 +1,34 @@
-# Basic IoT server setup
-
-**Do not use in production!!!** Some of the default settings in this repo are inherently unsafe to use in publicly exposed things.
+# IoT Datalab Garagepoort KenC
 
 ## Deploy steps:
-1. run the setup.sh script
-2. run `docker compose up -d`
-3. run `docker compose exec influxdb influx auth list > token` to get the user token to use in graphana and node red to communicate with the database
-4. have fun configuring graphana and node red to your liking. You have an MQTT broker to send messages trough! 
+-update esp met nieuwe code met mqtt + testen
+-Python container blijft herstarten..
+-sensor pi testen ter plaatse (op andere microcontroller?)
+
+-NodeRed debuggen
+-> nazicht nodes en datastroom syntax
+-Mqtt debuggen
+-> luistert extern op poort 1884 (waarom werkte dit wel bij iot-dashboard?)
+-Pangolin /Traefik debuggen
+
+-Verslag maken
+
+
 
 
 ## Default logins
-- Graphana: admin/admin
-- node-red: configured in setup.sh
-- influxdb: see step 3 in deploy!
+Token InfluxDB
+-> regel in yml, token file in folder en token zelf bewaard.. ?
+
+-docker-compose.yml
+-> regel paswoord voor Traefik uitgehashed
+-> waar stel je het paswoord in van Traefik?
+
+-mosquitto.conf
+-> anonieme login en paswoordregel voorlopig uitgehashed
+
+-inhoud setup.sh
+-> htpasswd en passwd files aanmaken via script?
+-> user en paswoord mqtt verwijderd vanwege authentication failure
+-> user en paswoord NodeRed via web 
+-> in tegenstelling tot InfluxDB en Grafana in yml en mqtt in .sh en code
