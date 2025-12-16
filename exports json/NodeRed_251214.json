@@ -1,0 +1,408 @@
+[
+    {
+        "id": "f6f2187d.f17ca8",
+        "type": "tab",
+        "label": "Garagepoort",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "cf93b72c1af26d02",
+        "type": "mqtt in",
+        "z": "f6f2187d.f17ca8",
+        "name": "Garage MQTT In",
+        "topic": "#",
+        "qos": "1",
+        "datatype": "auto-detect",
+        "broker": "5de8c4e497590394",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 120,
+        "y": 200,
+        "wires": [
+            [
+                "d51e9867f40c6c31"
+            ]
+        ]
+    },
+    {
+        "id": "d51e9867f40c6c31",
+        "type": "switch",
+        "z": "f6f2187d.f17ca8",
+        "name": "Split Garage Topics",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "garagepoort/knop",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "garagepoort/status",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "garagepoort/voortgang",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "garage/vochtigheid",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "garage/temperatuur",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 5,
+        "x": 350,
+        "y": 200,
+        "wires": [
+            [
+                "c62b248534a234d3"
+            ],
+            [
+                "276bf3599e0b4d26"
+            ],
+            [
+                "f630e29b6b3aaa1d"
+            ],
+            [
+                "22365b615c051770"
+            ],
+            [
+                "eb83311092ceab95"
+            ]
+        ]
+    },
+    {
+        "id": "276bf3599e0b4d26",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "proces status",
+        "func": "msg.payload = [\n    {\n        measurement: \"garage_status\",\n        tags: { device: \"ESP32\" },\n        fields: { state: msg.payload },\n        timestamp: new Date()\n    }\n];\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 650,
+        "y": 320,
+        "wires": [
+            [
+                "736cee683e4cd005",
+                "8eb4da33e3f7706f"
+            ]
+        ]
+    },
+    {
+        "id": "f630e29b6b3aaa1d",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "proces voortgang",
+        "func": "msg.payload = [\n    {\n        measurement: \"garage_voortgang\",\n        tags: { device: \"ESP32\" },\n        fields: { progress: Number(msg.payload) }, // 0-100%\n        timestamp: new Date()\n    }\n];\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 630,
+        "y": 440,
+        "wires": [
+            [
+                "1be7d150c572f77b",
+                "07abc4172ad53c7d"
+            ]
+        ]
+    },
+    {
+        "id": "c62b248534a234d3",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "proces knop",
+        "func": "msg.payload = [\n    {\n        measurement: \"garage_knop\",\n        tags: { device: \"ESP32\" },\n        fields: { button_pressed: msg.payload === \"ingedrukt\" ? 1 : 0 },\n        timestamp: new Date()\n    }\n];\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 650,
+        "y": 200,
+        "wires": [
+            [
+                "4b95281cc52f25f4",
+                "72ac7a3063ea77a1"
+            ]
+        ]
+    },
+    {
+        "id": "736cee683e4cd005",
+        "type": "influxdb out",
+        "z": "f6f2187d.f17ca8",
+        "influxdb": "651765b34993a6e0",
+        "name": "garagepoort status",
+        "measurement": "",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "garage_iot",
+        "bucket": "garage_data",
+        "x": 870,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "1be7d150c572f77b",
+        "type": "influxdb out",
+        "z": "f6f2187d.f17ca8",
+        "influxdb": "651765b34993a6e0",
+        "name": "garagepoort voortgang",
+        "measurement": "",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "garage_iot",
+        "bucket": "garage_data",
+        "x": 880,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "4b95281cc52f25f4",
+        "type": "influxdb out",
+        "z": "f6f2187d.f17ca8",
+        "influxdb": "651765b34993a6e0",
+        "name": "garagepoort knop",
+        "measurement": "",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "garage_iot",
+        "bucket": "garage_data",
+        "x": 870,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "22365b615c051770",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "proces temperatuur",
+        "func": "msg.payload = [\n    {\n        measurement: \"garage_temperatuur\",\n        tags: {\n            device: \"rpi4\",\n            sensor: \"dht11\"\n        },\n        fields: {\n            temperature: Number(msg.payload)\n        },\n        timestamp: new Date()\n    }\n];\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 630,
+        "y": 560,
+        "wires": [
+            [
+                "ddcc5950d58de616",
+                "8ff20ca6b46997a8"
+            ]
+        ]
+    },
+    {
+        "id": "ddcc5950d58de616",
+        "type": "influxdb out",
+        "z": "f6f2187d.f17ca8",
+        "influxdb": "651765b34993a6e0",
+        "name": "garage temperatuur",
+        "measurement": "",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "garage_iot",
+        "bucket": "garage_data",
+        "x": 870,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "52f6773b22e5c31e",
+        "type": "influxdb out",
+        "z": "f6f2187d.f17ca8",
+        "influxdb": "651765b34993a6e0",
+        "name": "garage vochtigheid",
+        "measurement": "",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "garage_iot",
+        "bucket": "garage_data",
+        "x": 870,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "eb83311092ceab95",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "proces vochtigheid",
+        "func": "msg.payload = [\n    {\n        measurement: \"garage_vochtigheid\",\n        tags: {\n            device: \"rpi4\",\n            sensor: \"dht11\"\n        },\n        fields: {\n            humidity: Number(msg.payload)\n        },\n        timestamp: new Date()\n    }\n];\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 630,
+        "y": 680,
+        "wires": [
+            [
+                "52f6773b22e5c31e",
+                "2f64641596398347"
+            ]
+        ]
+    },
+    {
+        "id": "8eb4da33e3f7706f",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 840,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "07abc4172ad53c7d",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 840,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "72ac7a3063ea77a1",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 840,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "8ff20ca6b46997a8",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "debug 4",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 840,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "2f64641596398347",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "debug 5",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 840,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "5de8c4e497590394",
+        "type": "mqtt-broker",
+        "name": "mqtt garagepoort",
+        "broker": "http://10.150.242.103",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "651765b34993a6e0",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": "8086",
+        "protocol": "http",
+        "database": "database",
+        "name": "influxdb",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "2.0",
+        "url": "http://influxdb:8086",
+        "timeout": "10",
+        "rejectUnauthorized": true
+    }
+]
