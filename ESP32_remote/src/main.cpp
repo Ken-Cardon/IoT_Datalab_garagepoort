@@ -17,15 +17,19 @@ unsigned long elapsedTime = 0; // Tijd gelopen vóór stop (nodig voor REVERSE)
 const unsigned long MAX_DURATION = 10000; // 10 seconden
 
 // WIFI VARIABELEN
-const char WIFI_SSID[] = "bletchley";
-const char WIFI_PASSWORD[] = "laptop!internet";
+//const char WIFI_SSID[] = "bletchley";
+//const char WIFI_PASSWORD[] = "laptop!internet";
+
+const char WIFI_SSID[] = "Liesket";
+const char WIFI_PASSWORD[] = "ahy8Akwk";
 
 // MQTT VARIABELEN
-const char MQTT_HOST[] = "10.150.242.103";
+//const char MQTT_HOST[] = "10.150.242.103";
+const char MQTT_HOST[] = "192.168.0.123";
 const int MQTT_PORT = 1883;
 // nog in te stellen
-const char MQTT_USER[] = "";
-const char MQTT_PASSWORD[] = "";
+const char MQTT_USER[] = "KenC";
+const char MQTT_PASSWORD[] = "KenCMQTT";
 
 WiFiClient espClient;
 PubSubClient client(espClient);
