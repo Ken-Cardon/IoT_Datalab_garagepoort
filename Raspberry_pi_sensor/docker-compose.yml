@@ -9,3 +9,5 @@ services:
     privileged: true
     devices:
       - /dev/gpiomem:/dev/gpiomem
+    labels:
+      - "traefik.enable=false"

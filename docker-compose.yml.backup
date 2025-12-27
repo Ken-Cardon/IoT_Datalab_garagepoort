@@ -1,7 +1,6 @@
-version: "3.8"
+version: '3.8'
 
 services:
-
   newt:
     image: fosrl/newt
     container_name: newt
@@ -12,39 +11,34 @@ services:
       - NEWT_SECRET=aok9pc690yh3lc95mjay8vgx5wyjgvwofwam3ercod879vkb
 
   traefik:
-    image: traefik:v2.11
-    container_name: traefik
-    restart: unless-stopped
+    image: traefik
     ports:
-      - "443:443"
-      - "80:80"
-    command:
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.web.address=:80"
+      - 80:80
+      - 443:443
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./traefik.yml:/etc/traefik/traefik.yml
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./htpasswd:/etc/traefik/passwd
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.traefik-dashboard.rule=PathPrefix(`/`)"
-      - "traefik.http.routers.traefik-dashboard.entrypoints=web"
-      - "traefik.http.routers.traefik-dashboard.service=api@internal"
+      - "traefik.http.routers.dashboard.rule=Host(`iotdatalabkenc.datalab.aplab.be`) && PathPrefix('/api')"
+      - "traefik.http.routers.dashboard.entrypoints=web"
+      - "traefik.http.routers.dashboard.service=api@internal"
+      - "traefik.http.middlewares.auth.basicauth.usersfile=/etc/traefik/passwd"
 
   mosquitto:
     image: eclipse-mosquitto:2.0
     container_name: mosquitto
-    restart: always
     ports:
       - "1883:1883"
     volumes:
       - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
       - ./passwd:/mosquitto/config/passwd
+    restart: always
 
   influxdb:
     image: influxdb:2.7
     container_name: influxdb
-    restart: always
     ports:
       - "8086:8086"
     volumes:
@@ -53,16 +47,15 @@ services:
     environment:
       - DOCKER_INFLUXDB_INIT_MODE=setup
       - DOCKER_INFLUXDB_INIT_USERNAME=KenC
-      - DOCKER_INFLUXDB_INIT_PASSWORD=KenCInfluxdb
+      - DOCKER_INFLUXDB_INIT_PASSWORD=KenCinfluxdb
       - DOCKER_INFLUXDB_INIT_ORG=garage_iot
       - DOCKER_INFLUXDB_INIT_BUCKET=garage_data
       - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=fvHh87oshlYCjy18oinySm1+Y507M8ssVo7FfWzkkVsxW0fMHTev2ypotIziiNow
-    labels:
+    restart: always
 
   node-red:
     image: nodered/node-red:3.1-debian
     container_name: node-red
-    restart: always
     depends_on:
       - mosquitto
       - influxdb
@@ -70,35 +63,32 @@ services:
       - "1880:1880"
     volumes:
       - node_red_data:/data
-    environment:
-      - NODE_RED_ENABLE_PROJECTS=true
-      - NODE_RED_HTTP_ROOT=/node-red
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.nodered.rule=PathPrefix(`/node-red`)"
-      - "traefik.http.routers.nodered.entrypoints=web"
-      - "traefik.http.services.nodered.loadbalancer.server.port=1880"
+      - "traefik.http.routers.node-red.rule=Host(`nodered-kenc.datalab.aplab.be`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.node-red.entrypoints=web"
+    environment:
+      - NODE_RED_ENABLE_PROJECTS=true
+    restart: always
 
   grafana:
-    image: grafana/grafana-oss:10.4.3
+    image: grafana/grafana-oss:9.5.9-ubuntu
     container_name: grafana
-    restart: always
     depends_on:
       - influxdb
+      - mosquitto
     ports:
       - "3000:3000"
     volumes:
       - grafana_data:/var/lib/grafana
-    environment:
-      - GF_SECURITY_ADMIN_PASSWORD=KenCGrafana
-      - GF_FEATURE_TOGGLES_ENABLE=publicDashboards
-      - GF_SERVER_SERVE_FROM_SUB_PATH=true
-      - GF_SERVER_ROOT_URL=%(protocol)s://%(domain)s/grafana/
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.grafana.rule=PathPrefix(`/grafana`)"
+      - "traefik.http.routers.grafana.rule=Host(`grafana.datalab.aplab.be`)"
       - "traefik.http.routers.grafana.entrypoints=web"
-      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+    environment:
+      - GF_FEATURE_TOGGLES_ENABLE=publicDashboards
+      - GF_SECURITY_ADMIN_PASSWORD=KenCGrafana
+    restart: always
 
 volumes:
   influxdb_data:

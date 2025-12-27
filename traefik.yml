@@ -1,7 +1,13 @@
+api:
+  dashboard: true
+
+log:
+  level: DEBUG
+
 entryPoints:
   web:
     address: ":80"
+
 providers:
-  docker: {}
-api:
-  dashboard: true
+  docker:
+    exposedByDefault: false

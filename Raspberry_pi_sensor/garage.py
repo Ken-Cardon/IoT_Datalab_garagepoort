@@ -1,88 +1,64 @@
-import RPi.GPIO as GPIO
-
 import board
 import adafruit_dht
-
 import paho.mqtt.client as mqtt
 import time
-import random
-import json # Handig voor het verzenden van één gecombineerd JSON-bericht
 
-
-MQTT_HOST = "10.150.242.103"
+# --- CONFIGURATIE ---
+#MQTT_HOST = "10.150.242.103"
+MQTT_HOST = "192.168.0.123"
 MQTT_PORT = 1883
-#MQTT_USER = "KenC"
-#MQTT_PASSWORD = "KenCMQTT"
 TOPIC_BASE = "garage/"
-
-# Tijd tussen metingen (in seconden)
 PUBLISH_INTERVAL = 30
 
-# MQTT communicatie
+#sensor op GPIO14
+dht_device = adafruit_dht.DHT11(board.D14)
 
 def on_connect(client, userdata, flags, rc):
-
     if rc == 0:
         print("MQTT verbinding succesvol.")
     else:
-        print(f"MQTT verbinding mislukt met code {rc}. Opnieuw proberen...")
-
-def on_disconnect(client, userdata, rc):
-
-    print("MQTT verbinding verbroken.")
+        print(f"MQTT verbinding mislukt met code {rc}.")
 
 def read_sensor_data():
-  # sensordata inlezen
     try:
-        # Lees data en wacht 2 seconden zoals vereist door DHT11
         temperature = dht_device.temperature
         humidity = dht_device.humidity
 
         if temperature is not None and humidity is not None:
-            # We ronden af voor de netheid, hoewel de DHT11 vaak integers levert
             return round(temperature, 1), round(humidity, 1)
-
-        else:
-            print("Kon geen geldige data van de DHT-sensor lezen.")
-            return None, None
     except RuntimeError as error:
-        # Leesfouten treden op als we te snel lezen
-        print(f"Runtime fout bij het lezen van de DHT: {error.args[0]}")
-        return None, None
+        print(f"Systeem melding: {error.args[0]}")
     except Exception as e:
-        print(f"Andere fout bij het lezen van sensordata: {e}")
-        return None, None
+        print(f"Fout bij uitlezen: {e}")
+
+    return None, None
 
 def main():
-  # Initialiseert de MQTT-client en start de publicatie.
-    client = mqtt.Client(client_id="RPI_TempHumi_Sensor")
-   #client.username_pw_set(MQTT_USER, MQTT_PASSWORD)
+    client = mqtt.Client(client_id="RPI_Garage_Sensor")
     client.on_connect = on_connect
-    client.on_disconnect = on_disconnect
 
-    print(f"Verbinden met MQTT-broker op {MQTT_HOST}:{MQTT_PORT}...")
+    print(f"Verbinden met MQTT-broker op {MQTT_HOST}...")
 
     try:
         client.connect(MQTT_HOST, MQTT_PORT, 60)
-        client.loop_start() # Start een aparte thread om netwerkverkeer af te handelen
+        client.loop_start()
 
         while True:
-            temperature, humidity = read_sensor_data()
+            temp, hum = read_sensor_data()
 
-            if temperature is not None and humidity is not None:
-
-                client.publish(TOPIC_BASE + "temperatuur", str(temperature), qos=1)
-                client.publish(TOPIC_BASE + "vochtigheid", str(humidity), qos=1)
-
-                print(f"Gepubliceerd: T={temperature}°C, H={humidity}%.")
+            if temp is not None and hum is not None:
+                client.publish(TOPIC_BASE + "temperatuur", str(temp), qos=1)
+                client.publish(TOPIC_BASE + "vochtigheid", str(hum), qos=1)
+                print(f"Gepubliceerd: T={temp}°C, H={hum}%")
+            else:
+                print("⚠️on geen sensorwaarden ophalen, volgende poging over 30s.")
 
             time.sleep(PUBLISH_INTERVAL)
 
     except KeyboardInterrupt:
-        print("\nAfgesloten door gebruiker.")
-    except Exception as e:
-        print(f"Er is een onverwachte fout opgetreden: {e}")
+        print("\nScript gestopt door gebruiker.")
     finally:
+        dht_device.exit()
         client.loop_stop()
         client.disconnect()
 
