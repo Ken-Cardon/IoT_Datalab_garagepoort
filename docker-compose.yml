@@ -27,9 +27,9 @@ services:
       - ./traefik.yml:/etc/traefik/traefik.yml:ro
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.traefik-dashboard.rule=PathPrefix(`/`)"
-      - "traefik.http.routers.traefik-dashboard.entrypoints=web"
-      - "traefik.http.routers.traefik-dashboard.service=api@internal"
+      - "traefik.http.routers.traefik.rule=PathPrefix(`/`)"
+      - "traefik.http.routers.traefik.entrypoints=web"
+      - "traefik.http.routers.traefik.service=api@internal"
 
   mosquitto:
     image: eclipse-mosquitto:2.0
@@ -57,7 +57,6 @@ services:
       - DOCKER_INFLUXDB_INIT_ORG=garage_iot
       - DOCKER_INFLUXDB_INIT_BUCKET=garage_data
       - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=fvHh87oshlYCjy18oinySm1+Y507M8ssVo7FfWzkkVsxW0fMHTev2ypotIziiNow
-    labels:
 
   node-red:
     image: nodered/node-red:3.1-debian
@@ -77,6 +76,8 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.nodered.rule=PathPrefix(`/node-red`)"
       - "traefik.http.routers.nodered.entrypoints=web"
+      - "traefik.http.routers.nodered.middlewares=nodered-stripprefix"
+      - "traefik.http.middlewares.nodered-stripprefix.stripprefix.prefixes=/node-red"
       - "traefik.http.services.nodered.loadbalancer.server.port=1880"
 
   grafana:
