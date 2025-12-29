@@ -51,7 +51,7 @@ def main():
                 client.publish(TOPIC_BASE + "vochtigheid", str(hum), qos=1)
                 print(f"Gepubliceerd: T={temp}°C, H={hum}%")
             else:
-                print("on geen sensorwaarden ophalen, volgende poging over 30s.")
+                print("kon geen sensorwaarden ophalen, volgende poging over 30s.")
 
             time.sleep(PUBLISH_INTERVAL)
 
