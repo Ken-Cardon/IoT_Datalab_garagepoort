@@ -1,4 +1,71 @@
 {
+  "__inputs": [
+    {
+      "name": "DS_INFLUXDB",
+      "label": "InfluxDB",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "influxdb",
+      "pluginName": "InfluxDB"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "panel",
+      "id": "barchart",
+      "name": "Bar chart",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "dashlist",
+      "name": "Dashboard list",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "gauge",
+      "name": "Gauge",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "gettingstarted",
+      "name": "Getting Started",
+      "version": ""
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "10.4.3"
+    },
+    {
+      "type": "datasource",
+      "id": "influxdb",
+      "name": "InfluxDB",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "news",
+      "name": "News",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "welcome",
+      "name": "Welcome",
+      "version": ""
+    }
+  ],
   "annotations": {
     "list": [
       {
@@ -18,39 +85,20 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 1,
+  "id": null,
   "links": [],
   "liveNow": false,
   "panels": [
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "cd870096-1c02-4798-b318-9bb816ffd131"
+        "uid": "${DS_INFLUXDB}"
       },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "hidden",
-            "fillOpacity": 100,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineWidth": 1,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "fixedColor": "orange",
+            "mode": "fixed"
           },
           "mappings": [],
           "thresholds": {
@@ -66,143 +114,38 @@
               }
             ]
           },
-          "unit": "string"
+          "unit": "ms"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
-        "w": 8,
+        "h": 9,
+        "w": 12,
         "x": 0,
-        "y": 0
-      },
-      "id": 123124,
-      "options": {
-        "barRadius": 0,
-        "barWidth": 0.5,
-        "fullHighlight": false,
-        "groupWidth": 0.7,
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "orientation": "auto",
-        "showValue": "never",
-        "stacking": "none",
-        "text": {
-          "valueSize": 1
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        },
-        "xField": "Time",
-        "xTickLabelRotation": -90,
-        "xTickLabelSpacing": 100
-      },
-      "pluginVersion": "9.5.9",
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "cd870096-1c02-4798-b318-9bb816ffd131"
-          },
-          "query": "from(bucket: \"garage_data\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r._measurement == \"garage_knop\")\r\n  |> map(\r\n    fn: (r) => ({\r\n      r with \r\n      _value: if r._value == \"ingedrukt\" then 1.0 else 0.0\r\n    })\r\n  )\r\n  |> yield(name: \"KnopDruk\")",
-          "refId": "A"
-        }
-      ],
-      "title": "poort knop",
-      "transparent": true,
-      "type": "barchart"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "cd870096-1c02-4798-b318-9bb816ffd131"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "series",
-            "axisLabel": "ms",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineStyle": {
-              "fill": "solid"
-            },
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "string"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 8,
         "y": 0
       },
       "id": 123128,
       "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
         },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
       },
-      "pluginVersion": "9.5.9",
+      "pluginVersion": "10.4.3",
       "targets": [
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "cd870096-1c02-4798-b318-9bb816ffd131"
+            "uid": "${DS_INFLUXDB}"
           },
           "query": "from(bucket: \"garage_data\")\r\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\r\n  |> filter(fn: (r) => r._measurement == \"garage_voortgang\")",
           "refId": "A"
@@ -210,12 +153,12 @@
       ],
       "title": "poort beweging",
       "transparent": true,
-      "type": "timeseries"
+      "type": "gauge"
     },
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "cd870096-1c02-4798-b318-9bb816ffd131"
+        "uid": "${DS_INFLUXDB}"
       },
       "fieldConfig": {
         "defaults": {
@@ -223,6 +166,7 @@
             "mode": "thresholds"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisGridShow": false,
@@ -262,15 +206,15 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 16,
+        "h": 9,
+        "w": 12,
+        "x": 12,
         "y": 0
       },
       "id": 123127,
       "options": {
         "barRadius": 0,
-        "barWidth": 0.5,
+        "barWidth": 0.99,
         "fullHighlight": false,
         "groupWidth": 0.7,
         "legend": {
@@ -288,17 +232,17 @@
           "sort": "none"
         },
         "xField": "Time",
-        "xTickLabelRotation": -90,
-        "xTickLabelSpacing": 0
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 100
       },
       "pluginVersion": "9.5.9",
       "targets": [
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "cd870096-1c02-4798-b318-9bb816ffd131"
+            "uid": "${DS_INFLUXDB}"
           },
-          "query": "from(bucket: \"garage_data\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r._measurement == \"garage_status\")\r\n  |> map(\r\n    fn: (r) => ({\r\n      r with \r\n      _value: if r._value == \"gaat open\" or r._value == \"geopend\" then 1.0 else 0.0\r\n    })\r\n  )\r\n  |> yield(name: \"GarageStatus\")",
+          "query": "from(bucket: \"garage_data\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r._measurement == \"garage_status\")\r\n  |> map(\r\n    fn: (r) => ({\r\n      r with \r\n      _value: if r._value == \"geopend\" then 1.0 else 0.0\r\n    })\r\n  )\r\n  |> yield(name: \"GarageStatus\")",
           "refId": "A"
         }
       ],
@@ -309,19 +253,44 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "cd870096-1c02-4798-b318-9bb816ffd131"
+        "uid": "${DS_INFLUXDB}"
       },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "palette-classic"
           },
           "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
             },
-            "inspect": false
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
           },
           "mappings": [],
           "thresholds": {
@@ -345,28 +314,27 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 8
+        "y": 9
       },
       "id": 123126,
       "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
         },
-        "frameIndex": 0,
-        "showHeader": true
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
       },
-      "pluginVersion": "9.5.9",
+      "pluginVersion": "10.4.3",
       "targets": [
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "cd870096-1c02-4798-b318-9bb816ffd131"
+            "uid": "${DS_INFLUXDB}"
           },
           "query": "from(bucket: \"garage_data\")\r\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\r\n  |> filter(fn: (r) => r._measurement == \"garage_vochtigheid\")",
           "refId": "A"
@@ -374,24 +342,49 @@
       ],
       "title": "vochtigheid",
       "transparent": true,
-      "type": "table"
+      "type": "timeseries"
     },
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "cd870096-1c02-4798-b318-9bb816ffd131"
+        "uid": "${DS_INFLUXDB}"
       },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "palette-classic"
           },
           "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
             },
-            "inspect": false
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
           },
           "mappings": [],
           "thresholds": {
@@ -415,27 +408,27 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 8
+        "y": 9
       },
       "id": 123125,
       "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
         },
-        "showHeader": true
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
       },
-      "pluginVersion": "9.5.9",
+      "pluginVersion": "10.4.3",
       "targets": [
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "cd870096-1c02-4798-b318-9bb816ffd131"
+            "uid": "${DS_INFLUXDB}"
           },
           "query": "from(bucket: \"garage_data\")\r\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\r\n  |> filter(fn: (r) => r._measurement == \"garage_temperatuur\")",
           "refId": "A"
@@ -443,25 +436,25 @@
       ],
       "title": "temperatuur",
       "transparent": true,
-      "type": "table"
+      "type": "timeseries"
     },
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "cd870096-1c02-4798-b318-9bb816ffd131"
+        "uid": "${DS_INFLUXDB}"
       },
       "gridPos": {
         "h": 3,
         "w": 24,
         "x": 0,
-        "y": 16
+        "y": 17
       },
       "id": 1,
       "targets": [
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "cd870096-1c02-4798-b318-9bb816ffd131"
+            "uid": "${DS_INFLUXDB}"
           },
           "refId": "A"
         }
@@ -471,20 +464,20 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "cd870096-1c02-4798-b318-9bb816ffd131"
+        "uid": "${DS_INFLUXDB}"
       },
       "gridPos": {
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 19
+        "y": 20
       },
       "id": 123123,
       "targets": [
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "cd870096-1c02-4798-b318-9bb816ffd131"
+            "uid": "${DS_INFLUXDB}"
           },
           "refId": "A"
         }
@@ -494,18 +487,19 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "cd870096-1c02-4798-b318-9bb816ffd131"
+        "uid": "${DS_INFLUXDB}"
       },
       "gridPos": {
         "h": 15,
         "w": 12,
         "x": 0,
-        "y": 28
+        "y": 29
       },
       "id": 3,
-      "links": [],
       "options": {
-        "folderId": 0,
+        "folderUID": "",
+        "includeVars": false,
+        "keepTime": false,
         "maxItems": 30,
         "query": "",
         "showHeadings": true,
@@ -514,13 +508,13 @@
         "showStarred": true,
         "tags": []
       },
-      "pluginVersion": "9.5.9",
+      "pluginVersion": "10.4.3",
       "tags": [],
       "targets": [
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "cd870096-1c02-4798-b318-9bb816ffd131"
+            "uid": "${DS_INFLUXDB}"
           },
           "refId": "A"
         }
@@ -531,16 +525,15 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "cd870096-1c02-4798-b318-9bb816ffd131"
+        "uid": "${DS_INFLUXDB}"
       },
       "gridPos": {
         "h": 15,
         "w": 12,
         "x": 12,
-        "y": 28
+        "y": 29
       },
       "id": 4,
-      "links": [],
       "options": {
         "feedUrl": "https://grafana.com/blog/news.xml",
         "showImage": true
@@ -549,7 +542,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "cd870096-1c02-4798-b318-9bb816ffd131"
+            "uid": "${DS_INFLUXDB}"
           },
           "refId": "A"
         }
@@ -558,9 +551,8 @@
       "type": "news"
     }
   ],
-  "refresh": false,
-  "schemaVersion": 38,
-  "style": "dark",
+  "refresh": "5s",
+  "schemaVersion": 39,
   "tags": [],
   "templating": {
     "list": []
@@ -570,7 +562,7 @@
     "to": "now"
   },
   "timepicker": {
-    "hidden": true,
+    "hidden": false,
     "refresh_intervals": [
       "5s",
       "10s",
@@ -599,6 +591,6 @@
   "timezone": "browser",
   "title": "Garage",
   "uid": "b36fedc3-c3bf-467e-942c-e53012457b59",
-  "version": 41,
+  "version": 12,
   "weekStart": ""
 }

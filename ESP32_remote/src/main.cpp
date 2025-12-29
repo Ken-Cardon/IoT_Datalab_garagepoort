@@ -5,11 +5,13 @@
 // PIN DEFINITIES
 const int led_pin = 0;
 const int druk_pin = 4;
+const int led_groen = 2; // groene led toegevoegd
 
 // STATE VARIABELEN
 bool isRunning = false;
 bool isForward = true;
 bool lastBtn = false; // Nodig voor non-blocking edge detection
+bool mqttTrigger = false; // om MQTT-knopdruk te detecteren
 
 // TIMING VARIABELEN
 unsigned long startTime = 0;
@@ -47,6 +49,25 @@ void mqttSend(const char* topic, const String& payload) {
   }
 }
 
+// MQTT callback zodat virtuele knop werkt
+void mqttCallback(char* topic, byte* payload, unsigned int length) {
+  String t = String(topic);
+  String msg;
+
+  for (unsigned int i = 0; i < length; i++) {
+    msg += (char)payload[i];
+  }
+
+  Serial.print("MQTT ← ");
+  Serial.print(t);
+  Serial.print(": ");
+  Serial.println(msg);
+
+  if (t == "garagepoort/knop" && msg == "ingedrukt") {
+    mqttTrigger = true; // zelfde gedrag als fysieke knop
+  }
+}
+
 // Herverbinding met de MQTT-broker
 void reconnectMQTT() {
   // Loop tot we verbonden zijn
@@ -56,6 +77,7 @@ void reconnectMQTT() {
     // Probeer te verbinden met clientID
     if (client.connect("Garagepoort_pi", MQTT_USER, MQTT_PASSWORD)) {
       Serial.println("MQTT connected.");
+      client.subscribe("garagepoort/knop"); // voor dashboard
     } else {
       Serial.print("MQTT failed, rc=");
       Serial.print(client.state());
@@ -66,12 +88,29 @@ void reconnectMQTT() {
   }
 }
 
+void updateLeds() { // leds reageren enkel op status
+  if (isRunning) {
+    if (isForward) {
+      digitalWrite(led_groen, HIGH);
+      digitalWrite(led_pin, LOW);
+    } else {
+      digitalWrite(led_groen, LOW);
+      digitalWrite(led_pin, HIGH);
+    }
+  } else {
+    digitalWrite(led_groen, LOW);
+    digitalWrite(led_pin, LOW);
+  }
+}
+
 void setup() {
   Serial.begin(115200);
 
   pinMode(led_pin, OUTPUT);
+  pinMode(led_groen, OUTPUT); // voor dashboard
   pinMode(druk_pin, INPUT); // externe pulldown
   digitalWrite(led_pin, LOW); // led uit bij start
+  digitalWrite(led_groen, LOW); // voor dashboard
 
   // WiFi verbinden
   Serial.print("Connecting to WiFi ");
@@ -89,73 +128,78 @@ void setup() {
 
   // MQTT server verbinden
   client.setServer(MQTT_HOST, MQTT_PORT);
+  client.setCallback(mqttCallback); // voor dashboard
   reconnectMQTT();
 }
 
-void loop() {
-  // Zorg dat de client verbonden blijft en berichten afhandelt
-  if (!client.connected()) {
-    reconnectMQTT(); // Probeer opnieuw te verbinden indien nodig
-  }
-  client.loop(); 
-
-  // knop logica
-  bool currBtn = digitalRead(druk_pin);
-  bool pressed = (currBtn && !lastBtn); // enkel reactie op flank
-  lastBtn = currBtn;
+void handlePress() { // centrale logica voor fysieke + virtuele knop
 
   unsigned long now = millis();
 
-  if (pressed) {
+  if (!isRunning) {
+    if (elapsedTime == 0) {
+      // volledig open of dicht geweest
+      isForward = !isForward; // richting omdraaien
+      elapsedTime = MAX_DURATION; // volledige looptijd
+    } else {
+      // onderbroken → zelfde tijd teruglopen
+      isForward = !isForward; // altijd omkeren bij herstart
+    }
 
-    mqttSend("garagepoort/knop", "ingedrukt");
+    isRunning = true;
+    startTime = now;
+    updateLeds(); // voor dashboard
 
-    if (!isRunning) {
+    mqttSend("garagepoort/status", isForward ? "gaat open" : "gaat dicht");
+    mqttSend("garagepoort/voortgang", String(elapsedTime));
+  }
+  else {
+    // stoppen
+    isRunning = false;
+    unsigned long ran = now - startTime;
     
-      isRunning = true;
-      startTime = now;
-      digitalWrite(led_pin, HIGH); // start de motor
+    if (ran > elapsedTime) ran = elapsedTime;
+    elapsedTime = ran;
 
-      if (elapsedTime == 0) {
-        // volledig open of dicht geweest
-        isForward = !isForward; // richting omdraaien
-        elapsedTime = MAX_DURATION; // volledige looptijd
-      }
+    updateLeds(); // voor dashboard
 
-      mqttSend("garagepoort/status", isForward ? "gaat open" : "gaat dicht");
-      mqttSend("garagepoort/voortgang", String(elapsedTime));
-    }
-    else {
-      // stoppen
-      isRunning = false;
-      unsigned long ran = now - startTime;
-      
-      // Bepaal de gelopen tijd en bewaar deze
-      if (ran > elapsedTime) ran = elapsedTime;
-      elapsedTime = ran;
+    mqttSend("garagepoort/status", "gestopt");
+    mqttSend("garagepoort/voortgang", String(elapsedTime));
+  }
+}
 
-      digitalWrite(led_pin, LOW); // stop de motor
+void loop() {
+  if (!client.connected()) {
+    reconnectMQTT();
+  }
+  client.loop(); 
 
-      mqttSend("garagepoort/status", "gestopt");
-      mqttSend("garagepoort/voortgang", String(elapsedTime));
-    }
+  // fysieke knop stuurt enkel MQTT
+  bool currBtn = digitalRead(druk_pin);
+  bool pressed = (currBtn && !lastBtn);
+  lastBtn = currBtn;
 
+  if (pressed) {
+    mqttTrigger = true; // fysieke knop triggert dezelfde logica
+  }
+
+  if (mqttTrigger) { // voor dashboard
+    mqttTrigger = false;
+    handlePress();
   }
 
   // auto stop na max looptijd
   if (isRunning) {
+    unsigned long now = millis();
     unsigned long currentElapsed = now - startTime;
     
-    if (currentElapsed >= elapsedTime) { // gebruik de bewaarde 'elapsedTime' als target duration
-      
-      // auto stop
+    if (currentElapsed >= elapsedTime) {
       isRunning = false;
-      elapsedTime = 0; // Volledig traject voltooid
-      digitalWrite(led_pin, LOW);
+      elapsedTime = 0;
+      updateLeds(); // voor dashboard
 
       mqttSend("garagepoort/status", isForward ? "geopend" : "gesloten");
       mqttSend("garagepoort/voortgang", "0");
-      
     }
   }
 }

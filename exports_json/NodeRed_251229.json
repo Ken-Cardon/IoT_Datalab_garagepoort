@@ -1,0 +1,1105 @@
+[
+    {
+        "id": "6498b53637ef6fca",
+        "type": "tab",
+        "label": "Garage pi school",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "4969f18d29e88105",
+        "type": "tab",
+        "label": "Garage pi home",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "7354b3efc66e0aae",
+        "type": "mqtt-broker",
+        "name": "mqtt garagepoort",
+        "broker": "http://192.168.0.123",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "85a788269a0447b4",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": "8086",
+        "protocol": "http",
+        "database": "database",
+        "name": "influxdb",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "2.0",
+        "url": "http://influxdb:8086",
+        "timeout": "10",
+        "rejectUnauthorized": true
+    },
+    {
+        "id": "dab663271d5e310a",
+        "type": "mqtt-broker",
+        "name": "mqtt",
+        "broker": "192.168.0.161",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "41ee7322661a1fd0",
+        "type": "ui_base",
+        "theme": {
+            "name": "theme-light",
+            "lightTheme": {
+                "default": "#0094CE",
+                "baseColor": "#0094CE",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": true,
+                "reset": false
+            },
+            "darkTheme": {
+                "default": "#097479",
+                "baseColor": "#097479",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": false
+            },
+            "customTheme": {
+                "name": "Untitled Theme 1",
+                "default": "#4B7930",
+                "baseColor": "#4B7930",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+            },
+            "themeState": {
+                "base-color": {
+                    "default": "#0094CE",
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-titlebar-backgroundColor": {
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-backgroundColor": {
+                    "value": "#fafafa",
+                    "edited": false
+                },
+                "page-sidebar-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-textColor": {
+                    "value": "#1bbfff",
+                    "edited": false
+                },
+                "group-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "widget-textColor": {
+                    "value": "#111111",
+                    "edited": false
+                },
+                "widget-backgroundColor": {
+                    "value": "#0094ce",
+                    "edited": false
+                },
+                "widget-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "base-font": {
+                    "value": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+                }
+            },
+            "angularTheme": {
+                "primary": "indigo",
+                "accents": "blue",
+                "warn": "red",
+                "background": "grey",
+                "palette": "light"
+            }
+        },
+        "site": {
+            "name": "Node-RED Dashboard",
+            "hideToolbar": "false",
+            "allowSwipe": "false",
+            "lockMenu": "false",
+            "allowTempTheme": "true",
+            "dateFormat": "DD/MM/YYYY",
+            "sizes": {
+                "sx": 48,
+                "sy": 48,
+                "gx": 6,
+                "gy": 6,
+                "cx": 6,
+                "cy": 6,
+                "px": 0,
+                "py": 0
+            }
+        }
+    },
+    {
+        "id": "51507dcee0ebc6e5",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": "8086",
+        "protocol": "http",
+        "database": "database",
+        "name": "db",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "2.0",
+        "url": "http://influxdb:8086",
+        "timeout": "10",
+        "rejectUnauthorized": true
+    },
+    {
+        "id": "4603ab92aecfaadb",
+        "type": "ui_group",
+        "name": "Garagepoort",
+        "tab": "68e2aca87658515b",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "68e2aca87658515b",
+        "type": "ui_tab",
+        "name": "Garage",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "c04c83004cfb7522",
+        "type": "mqtt in",
+        "z": "6498b53637ef6fca",
+        "name": "Garage MQTT In",
+        "topic": "#",
+        "qos": "1",
+        "datatype": "auto-detect",
+        "broker": "7354b3efc66e0aae",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 120,
+        "y": 80,
+        "wires": [
+            [
+                "5d4370c5270fffc2",
+                "0068e2ffedbafe56"
+            ]
+        ]
+    },
+    {
+        "id": "5d4370c5270fffc2",
+        "type": "switch",
+        "z": "6498b53637ef6fca",
+        "name": "Split Garage Topics",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "garagepoort/knop",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "garagepoort/status",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "garagepoort/voortgang",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "garage/vochtigheid",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "garage/temperatuur",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 5,
+        "x": 350,
+        "y": 80,
+        "wires": [
+            [
+                "14895ef361d18080"
+            ],
+            [
+                "11786b438c0cf6c6"
+            ],
+            [
+                "f216fbceb55d3668"
+            ],
+            [
+                "ccc0149b9c15e732"
+            ],
+            [
+                "273f5a90bce23abf"
+            ]
+        ]
+    },
+    {
+        "id": "8caadf32c0358264",
+        "type": "debug",
+        "z": "6498b53637ef6fca",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 840,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "6abe106f1b8b61d2",
+        "type": "debug",
+        "z": "6498b53637ef6fca",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 840,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "58b47fd93e0d1161",
+        "type": "debug",
+        "z": "6498b53637ef6fca",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 840,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "1bf91b4ea3fb06e8",
+        "type": "debug",
+        "z": "6498b53637ef6fca",
+        "name": "debug 4",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 840,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "3da99d77aee6c9a3",
+        "type": "debug",
+        "z": "6498b53637ef6fca",
+        "name": "debug 5",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 840,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "0068e2ffedbafe56",
+        "type": "debug",
+        "z": "6498b53637ef6fca",
+        "name": "debug 6",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 320,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "14895ef361d18080",
+        "type": "change",
+        "z": "6498b53637ef6fca",
+        "name": "knopstatus",
+        "rules": [
+            {
+                "t": "set",
+                "p": "measurement",
+                "pt": "msg",
+                "to": "garage_knop",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 650,
+        "y": 80,
+        "wires": [
+            [
+                "58b47fd93e0d1161",
+                "95bd7fc0b41047c9"
+            ]
+        ]
+    },
+    {
+        "id": "11786b438c0cf6c6",
+        "type": "change",
+        "z": "6498b53637ef6fca",
+        "name": "poortstatus",
+        "rules": [
+            {
+                "t": "set",
+                "p": "measurement",
+                "pt": "msg",
+                "to": "garage_status",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 650,
+        "y": 200,
+        "wires": [
+            [
+                "f4928d1c550edbf2",
+                "8caadf32c0358264"
+            ]
+        ]
+    },
+    {
+        "id": "f216fbceb55d3668",
+        "type": "change",
+        "z": "6498b53637ef6fca",
+        "name": "poortvoortgang",
+        "rules": [
+            {
+                "t": "set",
+                "p": "measurement",
+                "pt": "msg",
+                "to": "garage_voortgang",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 640,
+        "y": 320,
+        "wires": [
+            [
+                "02efeae8b49c282f",
+                "6abe106f1b8b61d2"
+            ]
+        ]
+    },
+    {
+        "id": "ccc0149b9c15e732",
+        "type": "change",
+        "z": "6498b53637ef6fca",
+        "name": "temperatuur",
+        "rules": [
+            {
+                "t": "set",
+                "p": "measurement",
+                "pt": "msg",
+                "to": "garage_temperatuur",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 650,
+        "y": 440,
+        "wires": [
+            [
+                "5a5f13a2d64a7592",
+                "1bf91b4ea3fb06e8"
+            ]
+        ]
+    },
+    {
+        "id": "273f5a90bce23abf",
+        "type": "change",
+        "z": "6498b53637ef6fca",
+        "name": "vochtigheid",
+        "rules": [
+            {
+                "t": "set",
+                "p": "measurement",
+                "pt": "msg",
+                "to": "garage_vochtigheid",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 650,
+        "y": 560,
+        "wires": [
+            [
+                "be59e65d1abd8f11",
+                "3da99d77aee6c9a3"
+            ]
+        ]
+    },
+    {
+        "id": "f4928d1c550edbf2",
+        "type": "influxdb out",
+        "z": "6498b53637ef6fca",
+        "influxdb": "85a788269a0447b4",
+        "name": "garagepoort status",
+        "measurement": "garage_status",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "garage_iot",
+        "bucket": "garage_data",
+        "x": 870,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "02efeae8b49c282f",
+        "type": "influxdb out",
+        "z": "6498b53637ef6fca",
+        "influxdb": "85a788269a0447b4",
+        "name": "garagepoort voortgang",
+        "measurement": "garage_voortgang",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "garage_iot",
+        "bucket": "garage_data",
+        "x": 880,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "95bd7fc0b41047c9",
+        "type": "influxdb out",
+        "z": "6498b53637ef6fca",
+        "influxdb": "85a788269a0447b4",
+        "name": "garagepoort knop",
+        "measurement": "garage_knop",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "garage_iot",
+        "bucket": "garage_data",
+        "x": 870,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "5a5f13a2d64a7592",
+        "type": "influxdb out",
+        "z": "6498b53637ef6fca",
+        "influxdb": "85a788269a0447b4",
+        "name": "garage temperatuur",
+        "measurement": "garage_temperatuur",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "garage_iot",
+        "bucket": "garage_data",
+        "x": 870,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "be59e65d1abd8f11",
+        "type": "influxdb out",
+        "z": "6498b53637ef6fca",
+        "influxdb": "85a788269a0447b4",
+        "name": "garage vochtigheid",
+        "measurement": "garage_vochtigheid",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "garage_iot",
+        "bucket": "garage_data",
+        "x": 870,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "8e8555ffe8fec2a8",
+        "type": "mqtt in",
+        "z": "4969f18d29e88105",
+        "name": "Garage MQTT In",
+        "topic": "#",
+        "qos": "1",
+        "datatype": "auto-detect",
+        "broker": "7354b3efc66e0aae",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 120,
+        "y": 140,
+        "wires": [
+            [
+                "02429de45a0fda45",
+                "0d776b761ece6791"
+            ]
+        ]
+    },
+    {
+        "id": "02429de45a0fda45",
+        "type": "switch",
+        "z": "4969f18d29e88105",
+        "name": "Split Garage Topics",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "garagepoort/knop",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "garagepoort/status",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "garagepoort/voortgang",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "garage/vochtigheid",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "garage/temperatuur",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 5,
+        "x": 350,
+        "y": 140,
+        "wires": [
+            [
+                "a5f1b8bf9b88b6fa",
+                "7c25be9939fe76de"
+            ],
+            [
+                "d95c1f65db3efa59",
+                "7c25be9939fe76de"
+            ],
+            [
+                "c643ecc0297df1b2",
+                "7c25be9939fe76de"
+            ],
+            [
+                "db588096a89ed59d"
+            ],
+            [
+                "2c6eee222ffee153"
+            ]
+        ]
+    },
+    {
+        "id": "9e5b18451232a299",
+        "type": "debug",
+        "z": "4969f18d29e88105",
+        "name": "debug 7",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 840,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "10e217da3e03f7fa",
+        "type": "debug",
+        "z": "4969f18d29e88105",
+        "name": "debug 8",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 840,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "fcb9926c8311b998",
+        "type": "debug",
+        "z": "4969f18d29e88105",
+        "name": "debug 9",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 840,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "4bcd986fd4c7d5cd",
+        "type": "debug",
+        "z": "4969f18d29e88105",
+        "name": "debug 10",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 840,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "cca7f5f8dec41573",
+        "type": "debug",
+        "z": "4969f18d29e88105",
+        "name": "debug 11",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 840,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "0d776b761ece6791",
+        "type": "debug",
+        "z": "4969f18d29e88105",
+        "name": "debug 12",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 320,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "a5f1b8bf9b88b6fa",
+        "type": "change",
+        "z": "4969f18d29e88105",
+        "name": "knopstatus",
+        "rules": [
+            {
+                "t": "set",
+                "p": "measurement",
+                "pt": "msg",
+                "to": "garage_status",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 650,
+        "y": 140,
+        "wires": [
+            [
+                "fcb9926c8311b998",
+                "c4db078c3669bae3"
+            ]
+        ]
+    },
+    {
+        "id": "d95c1f65db3efa59",
+        "type": "change",
+        "z": "4969f18d29e88105",
+        "name": "poortstatus",
+        "rules": [
+            {
+                "t": "set",
+                "p": "measurement",
+                "pt": "msg",
+                "to": "garage_status",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 650,
+        "y": 260,
+        "wires": [
+            [
+                "78928a7d7190f26a",
+                "9e5b18451232a299"
+            ]
+        ]
+    },
+    {
+        "id": "c643ecc0297df1b2",
+        "type": "change",
+        "z": "4969f18d29e88105",
+        "name": "poortvoortgang",
+        "rules": [
+            {
+                "t": "set",
+                "p": "measurement",
+                "pt": "msg",
+                "to": "garage_voortgang",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 640,
+        "y": 380,
+        "wires": [
+            [
+                "a849b3e00ff07752",
+                "10e217da3e03f7fa"
+            ]
+        ]
+    },
+    {
+        "id": "db588096a89ed59d",
+        "type": "change",
+        "z": "4969f18d29e88105",
+        "name": "temperatuur",
+        "rules": [
+            {
+                "t": "set",
+                "p": "measurement",
+                "pt": "msg",
+                "to": "garage_temperatuur",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 650,
+        "y": 500,
+        "wires": [
+            [
+                "196508cc44a2c0b1",
+                "4bcd986fd4c7d5cd"
+            ]
+        ]
+    },
+    {
+        "id": "2c6eee222ffee153",
+        "type": "change",
+        "z": "4969f18d29e88105",
+        "name": "vochtigheid",
+        "rules": [
+            {
+                "t": "set",
+                "p": "measurement",
+                "pt": "msg",
+                "to": "garage_vochtigheid",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 650,
+        "y": 620,
+        "wires": [
+            [
+                "421e4937444b8499",
+                "cca7f5f8dec41573"
+            ]
+        ]
+    },
+    {
+        "id": "78928a7d7190f26a",
+        "type": "influxdb out",
+        "z": "4969f18d29e88105",
+        "influxdb": "85a788269a0447b4",
+        "name": "garagepoort status",
+        "measurement": "garage_status",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "garage_iot",
+        "bucket": "garage_data",
+        "x": 870,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "a849b3e00ff07752",
+        "type": "influxdb out",
+        "z": "4969f18d29e88105",
+        "influxdb": "85a788269a0447b4",
+        "name": "garagepoort voortgang",
+        "measurement": "garage_voortgang",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "garage_iot",
+        "bucket": "garage_data",
+        "x": 880,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "c4db078c3669bae3",
+        "type": "influxdb out",
+        "z": "4969f18d29e88105",
+        "influxdb": "85a788269a0447b4",
+        "name": "garagepoort knop",
+        "measurement": "garage_knop",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "garage_iot",
+        "bucket": "garage_data",
+        "x": 870,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "196508cc44a2c0b1",
+        "type": "influxdb out",
+        "z": "4969f18d29e88105",
+        "influxdb": "85a788269a0447b4",
+        "name": "garage temperatuur",
+        "measurement": "garage_temperatuur",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "garage_iot",
+        "bucket": "garage_data",
+        "x": 870,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "421e4937444b8499",
+        "type": "influxdb out",
+        "z": "4969f18d29e88105",
+        "influxdb": "85a788269a0447b4",
+        "name": "garage vochtigheid",
+        "measurement": "garage_vochtigheid",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "garage_iot",
+        "bucket": "garage_data",
+        "x": 870,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "8ad8c01ab7b3c46d",
+        "type": "ui_button",
+        "z": "4969f18d29e88105",
+        "name": "",
+        "group": "4603ab92aecfaadb",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "openen / sluiten",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "ingedrukt",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 120,
+        "y": 520,
+        "wires": [
+            [
+                "dce91624bab236f3"
+            ]
+        ]
+    },
+    {
+        "id": "dce91624bab236f3",
+        "type": "mqtt out",
+        "z": "4969f18d29e88105",
+        "name": "",
+        "topic": "garagepoort/knop",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "7354b3efc66e0aae",
+        "x": 350,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "7c25be9939fe76de",
+        "type": "ui_template",
+        "z": "4969f18d29e88105",
+        "group": "4603ab92aecfaadb",
+        "name": "LED",
+        "order": 0,
+        "width": "0",
+        "height": "0",
+        "format": "<div style=\"text-align:center;\">\n\n    <h1></h1>\n    <br>\n\n    <div id=\"ledCircle\" style=\"\n        width: 60px;\n        height: 60px;\n        border-radius: 50%;\n        margin: auto;\n        transition: all 0.3s ease;\n        background-color: red;\n        box-shadow: 0 0 10px red;\">\n    </div>\n\n    <h3 id=\"statusText\" style=\"margin-top:15px; color:red;\">\n        status poort\n    </h3>\n\n</div>\n\n<script>\n    (function(scope) {\n\n    scope.$watch('msg.payload', function(value) {\n        if (!value) return;\n\n        let led = document.getElementById(\"ledCircle\");\n        let text = document.getElementById(\"statusText\");\n\n        if (value === \"gaat open\") {\n            led.style.backgroundColor = \"lime\";\n            led.style.boxShadow = \"0 0 20px lime\";\n            text.innerText = \"Poort in beweging\";\n            text.style.color = \"lime\";\n        }\n\n        else if (value === \"gaat dicht\") {\n            led.style.backgroundColor = \"red\";\n            led.style.boxShadow = \"0 0 20px red\";\n            text.innerText = \"Poort in beweging\";\n            text.style.color = \"red\";\n        }\n\n        else if (value === \"gestopt\" || value === \"geopend\" || value === \"gesloten\") {\n            led.style.backgroundColor = \"gray\";\n            led.style.boxShadow = \"0 0 10px gray\";\n            text.innerText = \"Poort gestopt\";\n            text.style.color = \"gray\";\n        }\n\n    });\n\n})(scope);\n</script>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 670,
+        "y": 40,
+        "wires": [
+            []
+        ]
+    }
+]
